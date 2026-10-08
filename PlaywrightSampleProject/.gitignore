@@ -1,0 +1,27 @@
+# Playwright specific folders
+test-results/
+playwright-report/
+blob-report/
+playwright/.local-browsers/
+.snapshots/
+
+# Tracing and temporary artifacts
+trace.zip
+*.har
+
+# Java at Build Tool directories (Maven / Gradle)
+target/
+.gradle/
+build/
+.settings/
+.classpath
+.project
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+
+# System specific files
+.DS_Store
+Thumbs.db
