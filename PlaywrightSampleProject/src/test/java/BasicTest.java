@@ -1,7 +1,4 @@
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
 import org.testng.annotations.Test;
 
@@ -32,5 +29,30 @@ public class BasicTest {
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
 
+        assertThat(page.getByRole(AriaRole.LINK,
+                new Page.GetByRoleOptions().setName("Browse Events →"))).isVisible();
+
+        page.navigate("https://eventhub.rahulshettyacademy.com/admin/events");
+        page.locator("#event-title-input").fill("QA Summit Rahul Shetty");
+        page.locator("#admin-event-form textarea").fill("Rahul Shetty QA Meetups");
+        page.getByLabel("Category").selectOption("Concert");
+        page.getByLabel("City").fill("Test City");
+        page.getByLabel("Venue").fill("Test Venue");
+        page.getByLabel("Event Date & Time").fill("2026-12-18T07:25");
+        //page.waitForTimeout(3000);
+        page.getByLabel("Price ($)").fill("100");
+        page.getByLabel("Total Seats").fill("50");
+        page.locator("#add-event-btn").click();
+        //Event created!
+        assertThat(page.getByText("Event created")).isVisible();
+
+        //Step 2 - Find newly created event in the events page
+        page.locator("nav-events").click();
+        Locator eventCards = page.getByTestId("event-card");
+        eventCards.filter();
+        System.out.println(eventCards.count());
+        //Visibility of the card which we have added
+        Locator targetCard = eventCards.filter(new Locator.FilterOptions().setHasText("QA Summit Rahul Shetty"));
+        assertThat(targetCard).isVisible();
     }
 }
